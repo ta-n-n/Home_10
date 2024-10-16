@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, ImageBackground, Image } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground,Image } from 'react-native';
+import PhoneInput from 'react-native-phone-number-input'; // Import PhoneInput
 
 const SignInScreen = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [formattedValue, setFormattedValue] = useState('');
+  const phoneInput = useRef(null); // Tạo tham chiếu cho PhoneInput
 
   return (
     <ImageBackground
-      source={require('../kiemtra/signinbackground.jpg')} // Đường dẫn ảnh nền
+      source={require('../kiemtra/assets/signinbackground.jpg')} // Đường dẫn ảnh nền
       style={styles.background}
     >
       <View style={styles.overlay}>
@@ -14,19 +17,28 @@ const SignInScreen = ({ navigation }) => {
           <Text style={styles.title}>Get your groceries with nectar</Text>
 
           {/* Phần nhập số điện thoại */}
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="Enter your phone number"
-            placeholderTextColor="#aaa"
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={phoneNumber}
+            defaultCode="VN"
+            layout="first"
+            placeholder="Nhập số điện thoại"
+            onChangeText={(text) => {
+              setPhoneNumber(text); // Sử dụng setPhoneNumber
+            }}
+            onChangeFormattedText={(text) => {
+              setFormattedValue(text);
+            }}
+            withShadow
+            autoFocus
+            containerStyle={styles.phoneInputContainer}
+            textContainerStyle={styles.phoneInputTextContainer}
           />
 
           {/* Nút Continue with Google */}
           <TouchableOpacity style={styles.googleButton}>
             <Image 
-              source={require('../kiemtra/googlelogo.png')} // Đường dẫn logo Google
+              source={require('../kiemtra/assets/googlelogo.png')} // Đường dẫn logo Google
               style={styles.googleLogo} // Sử dụng style riêng cho logo Google
             />
             <Text style={styles.buttonTextGoogle}>Continue with Google</Text>
@@ -35,7 +47,7 @@ const SignInScreen = ({ navigation }) => {
           {/* Nút Continue with Facebook */}
           <TouchableOpacity style={styles.facebookButton}>
             <Image 
-              source={require('../kiemtra/facebooklogo.png')} // Đường dẫn logo Facebook
+              source={require('../kiemtra/assets/facebooklogo.png')} // Đường dẫn logo Facebook
               style={styles.facebookLogo} // Sử dụng style riêng cho logo Facebook
             />
             <Text style={styles.buttonTextFacebook}>Continue with Facebook</Text>
@@ -66,16 +78,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 20,
   },
-  phoneInput: {
+  phoneInputContainer: {
     width: '100%',  // Để nút chiếm toàn bộ chiều rộng
-    height: 50,
-    backgroundColor: '#fff',
     borderRadius: 25,
-    paddingHorizontal: 20,
-    fontSize: 16,
     marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    backgroundColor: '#fff', // Nền trắng cho ô nhập
+  },
+  phoneInputTextContainer: {
+    backgroundColor: '#fff', // Nền trắng cho ô nhập
   },
   googleButton: {
     flexDirection: 'row',
@@ -97,7 +107,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 25,
     marginTop: 20,
-width: '100%',  // Để nút chiếm toàn bộ chiều rộng
+    width: '100%',  // Để nút chiếm toàn bộ chiều rộng
     borderColor: '#29487d',
     borderWidth: 2,
   },

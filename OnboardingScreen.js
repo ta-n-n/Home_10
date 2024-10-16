@@ -1,15 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 
 const OnboardingScreen = ({ navigation }) => {
   return (
     <ImageBackground
-      source={require('../kiemtra/onboardingbackground.jpg')}  // Đường dẫn ảnh nền
+      source={require('../kiemtra/assets/onboardingbackground.jpg')} // Đường dẫn ảnh nền
       style={styles.background}
     >
       <View style={styles.overlay}>
         <View style={styles.content}>
-          <Text style={styles.title}>Welcome to our store</Text>
+          <View style={styles.titleContainer}>
+            <Image
+              source={require('../kiemtra/assets/carrot.png')} // Đường dẫn hình cà rốt
+              style={styles.carrotImage} // Sử dụng style cho hình cà rốt
+            />
+            <Text style={styles.title}>Welcome to our store</Text>
+          </View>
           <Text style={styles.subtitle}>Get your groceries in as fast as one hour</Text>
 
           {/* Nút Get Started */}
@@ -39,11 +45,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,  // Điều chỉnh khoảng cách nội dung với nút
   },
+  titleContainer: {
+    alignItems: 'center', // Căn giữa theo chiều ngang
+    marginBottom: 10,
+  },
   title: {
     fontSize: 50,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 10,
+    marginTop: 10, // Khoảng cách từ hình cà rốt đến chữ "Welcome"
+  },
+  carrotImage: {
+    width: 60, // Giảm chiều rộng của hình cà rốt
+    height: 60, // Giảm chiều cao của hình cà rốt
+    resizeMode: 'contain', // Giữ tỉ lệ khung hình
+    position: 'absolute', // Đặt hình ở vị trí tuyệt đối
+    bottom: 120, // Giảm giá trị này để di chuyển hình cà rốt lên cao hơn
   },
   subtitle: {
     textAlign: 'center',
